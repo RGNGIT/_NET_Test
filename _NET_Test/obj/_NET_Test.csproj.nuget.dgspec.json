@@ -1,25 +1,27 @@
 {
   "format": 1,
   "restore": {
-    "/Users/a1/Projects/_NET_Test/_NET_Test/_NET_Test.csproj": {}
+    "C:\\Users\\vnife\\Source\\Repos\\RGNGIT\\_NET_Test\\_NET_Test\\_NET_Test.csproj": {}
   },
   "projects": {
-    "/Users/a1/Projects/_NET_Test/_NET_Test/_NET_Test.csproj": {
+    "C:\\Users\\vnife\\Source\\Repos\\RGNGIT\\_NET_Test\\_NET_Test\\_NET_Test.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/a1/Projects/_NET_Test/_NET_Test/_NET_Test.csproj",
+        "projectUniqueName": "C:\\Users\\vnife\\Source\\Repos\\RGNGIT\\_NET_Test\\_NET_Test\\_NET_Test.csproj",
         "projectName": "_NET_Test",
-        "projectPath": "/Users/a1/Projects/_NET_Test/_NET_Test/_NET_Test.csproj",
-        "packagesPath": "/Users/a1/.nuget/packages/",
-        "outputPath": "/Users/a1/Projects/_NET_Test/_NET_Test/obj/",
+        "projectPath": "C:\\Users\\vnife\\Source\\Repos\\RGNGIT\\_NET_Test\\_NET_Test\\_NET_Test.csproj",
+        "packagesPath": "C:\\Users\\vnife\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\vnife\\Source\\Repos\\RGNGIT\\_NET_Test\\_NET_Test\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/a1/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\vnife\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -38,9 +40,9 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
-            "Swashbuckle.AspNetCore": {
+            "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
-              "version": "[6.2.3, )"
+              "version": "[7.0.2, )"
             }
           },
           "imports": [
@@ -62,7 +64,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/6.0.405/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.102\\RuntimeIdentifierGraph.json"
         }
       }
     }
