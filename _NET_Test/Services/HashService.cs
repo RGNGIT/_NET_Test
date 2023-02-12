@@ -7,7 +7,7 @@ namespace _NET_Test.Services
     {
         public string CreateHash(string value)
         {
-            byte[] salt = RandomNumberGenerator.GetBytes(128 / 8);
+            byte[] salt = {3, 5, 7, 9};
             string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
                 password: value!,
                 salt: salt,

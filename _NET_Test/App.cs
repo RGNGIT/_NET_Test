@@ -1,5 +1,4 @@
-﻿using _NET_Test.Repositories;
-using _NET_Test.Services;
+﻿using _NET_Test.Services;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -23,11 +22,6 @@ app.MapControllerRoute(
     "default",
     app.Configuration["api-call"] + "/{controller}/{action}"
 );
-
-app.MapGet("/", async (context) =>
-{
-    await context.Response.WriteAsync("Launched");
-});
 
 Config.configuration = app.Configuration;
 

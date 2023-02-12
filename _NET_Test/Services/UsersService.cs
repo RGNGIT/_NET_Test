@@ -1,13 +1,12 @@
 ﻿using _NET_Test.Repositories;
-using Microsoft.Extensions.Configuration;
-using System;
-using _NET_Test.Classes;
+using _NET_Test.DatabaseModels;
+
 namespace _NET_Test.Services
 {
 	public class UsersService
 	{
 
-		public async Task<User> Add(string username, string password)
+		public async Task<User> AddNew(string username, string password)
 		{
 			User user = new() 
 			{ 
@@ -15,8 +14,15 @@ namespace _NET_Test.Services
 				Password = password 
 			};
 			UsersRepository repo = new();
-			await repo.AddOne(user);
-			return user;
+			User? check = await repo.FindOneByUsername(username);
+			if(check == null) 
+			{
+                return await repo.AddOne(user);
+            }
+			else
+			{
+				throw new Exception("User with this username already exists!");
+			}
 		}
 
 	}
