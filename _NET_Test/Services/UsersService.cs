@@ -1,5 +1,6 @@
 ﻿using _NET_Test.Repositories;
 using _NET_Test.DatabaseModels;
+using System.Text.Json;
 
 namespace _NET_Test.Services
 {
@@ -25,6 +26,20 @@ namespace _NET_Test.Services
 			}
 		}
 
+		public async Task<User?> FetchByUsername(string username)
+		{
+            UsersRepository repo = new();
+			return await repo.FindOneByUsername(username);
+		}
+
+		public object JwtToUser(string jwtHeader)
+		{
+			string[] jwtSplit = jwtHeader.ToString().Split(' ');
+			jwtHeader = Config.JWT.Decode(jwtSplit[1]);
+			string[] jsonSplit = jwtHeader.Split('.');
+			object user = JsonSerializer.Deserialize<object>(jsonSplit[1])!;
+			return user;
+		}
 	}
 }
 

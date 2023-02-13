@@ -7,6 +7,11 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddMvc();
 builder.Services.AddControllers();
 builder.Services.AddServices();
+builder.Services.AddAuthentication("Bearer").AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = Config.JWT.validationParameters;
+});
+builder.Services.AddAuthorization();
 builder.Services.AddSession(options =>
 {
     options.Cookie.Name = "Movie.Session";
@@ -17,6 +22,7 @@ builder.Services.AddSession(options =>
 WebApplication app = builder.Build();
 
 app.UseAuthentication();
+app.UseAuthorization();
 app.UseSession();
 app.MapControllerRoute(
     "default",

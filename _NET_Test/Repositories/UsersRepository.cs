@@ -20,8 +20,7 @@ namespace _NET_Test.Repositories
         {
             using (DatabaseContext db = new(Config.configuration))
             {
-                User? user = await db.Users.FindAsync(id);
-                return user;
+                return await db.Users.FindAsync(id); ;
             }
         }
 
@@ -29,9 +28,8 @@ namespace _NET_Test.Repositories
 		{
 			using (DatabaseContext db = new (Config.configuration))
 			{
-				User? user = await db.Users.SingleOrDefaultAsync(x => x.Username == username);
-				return user;
-			}
+				return await db.Users.SingleOrDefaultAsync(x => x.Username == username);
+            }
 		}
 
 	}
