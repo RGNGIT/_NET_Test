@@ -23,7 +23,7 @@ namespace _NET_Test.Repositories
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(configuration.GetConnectionString("Local"));
-            optionsBuilder.LogTo(Console.WriteLine);
+            // optionsBuilder.LogTo(Console.WriteLine);
         }
 
     }

@@ -8,7 +8,6 @@ using System.IdentityModel.Tokens.Jwt;
 
 namespace _NET_Test.Controllers
 {
-
     public class UsersController: ControllerBase
 	{
 		[HttpPost]
@@ -38,14 +37,14 @@ namespace _NET_Test.Controllers
 				{
                     List<Claim> claims = new List<Claim> 
 					{ 
-						new Claim("Id", user.Id!.ToString()),
-						new Claim("Username", user.Username!) 
+						new Claim("Id", userFound.Id!.ToString()),
+						new Claim("Username", userFound.Username!) 
 					};
                     JwtSecurityToken jwt = new (
 						issuer: Config.JWT.Issuer,
 						audience: Config.JWT.Audience,
                         claims: claims,
-						expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(30)),
+						expires: DateTime.UtcNow.Add(TimeSpan.FromMinutes(3000)),
 						signingCredentials: new SigningCredentials(Config.JWT.GetSecretKey(), SecurityAlgorithms.HmacSha256)
 						);
                     return Results.Ok(new JwtSecurityTokenHandler().WriteToken(jwt));
@@ -60,21 +59,6 @@ namespace _NET_Test.Controllers
                 return Results.Problem(ex.Message);
             }
 		}
-
-		[HttpGet]
-		[Authorize]
-		public IResult AuthMarco(UsersService userService)
-		{
-			try
-			{
-				return Results.Ok(userService.JwtToUser(Request.Headers["Authorization"]!));
-            }
-			catch(Exception ex) 
-			{
-				return Results.Problem(ex.Message);
-			}
-		}
-
 	}
 }
 

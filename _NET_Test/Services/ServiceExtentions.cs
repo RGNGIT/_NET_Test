@@ -7,6 +7,7 @@
             collection.AddTransient<UsersService>();
 			collection.AddTransient<ActorsService>();
 			collection.AddSingleton<HashService>();
+			collection.AddSingleton<MoviesService>();
 		}
     }
 }

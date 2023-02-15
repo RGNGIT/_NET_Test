@@ -16,7 +16,7 @@ namespace _NET_Test.Repositories
             }
 		}
 
-        public async Task<User?> FindOneById(string id)
+        public async Task<User?> FindOneById(int id)
         {
             using (DatabaseContext db = new(Config.configuration))
             {

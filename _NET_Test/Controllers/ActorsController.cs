@@ -6,9 +6,22 @@ namespace _NET_Test.Controllers
 {
     public class ActorsController : ControllerBase
     {
+        [HttpGet]
+        public async Task<IResult> ShowAll(ActorsService actorsService)
+        {
+            try
+            {
+                return Results.Ok(await actorsService.FetchAll());
+            } 
+            catch(Exception ex) 
+            {
+                return Results.Problem(ex.Message);
+            }
+        }
+
         [HttpPost]
         [Consumes("application/x-www-form-urlencoded")]
-        public async Task<IResult> Register(ActorsService actorsService, Actor actor)
+        public async Task<IResult> AddActor(ActorsService actorsService, Actor actor)
         {
             try
             {
@@ -21,7 +34,6 @@ namespace _NET_Test.Controllers
                 return Results.Problem(ex.Message);
             }
         }
-
 
     }
 }

@@ -1,10 +1,12 @@
 ﻿using _NET_Test.Repositories;
 using _NET_Test.DatabaseModels;
 using System.Text.Json;
+using System.Reflection;
 
 namespace _NET_Test.Services
 {
-	public class UsersService
+
+    public class UsersService
 	{
 
 		public async Task<User> AddNew(string username, string password)
@@ -32,12 +34,12 @@ namespace _NET_Test.Services
 			return await repo.FindOneByUsername(username);
 		}
 
-		public object JwtToUser(string jwtHeader)
+		public AuthUser JwtToUser(string jwtHeader)
 		{
-			string[] jwtSplit = jwtHeader.ToString().Split(' ');
+            string[] jwtSplit = jwtHeader.ToString().Split(' ');
 			jwtHeader = Config.JWT.Decode(jwtSplit[1]);
 			string[] jsonSplit = jwtHeader.Split('.');
-			object user = JsonSerializer.Deserialize<object>(jsonSplit[1])!;
+            AuthUser user = JsonSerializer.Deserialize<AuthUser>(jsonSplit[1])!;
 			return user;
 		}
 	}
