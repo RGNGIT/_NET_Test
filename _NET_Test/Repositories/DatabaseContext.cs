@@ -20,6 +20,11 @@ namespace _NET_Test.Repositories
             Database.EnsureCreated();
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Rating>().ToTable(t => t.HasCheckConstraint("Rate", "Rate > 0 AND Rate < 6"));
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(configuration.GetConnectionString("Local"));

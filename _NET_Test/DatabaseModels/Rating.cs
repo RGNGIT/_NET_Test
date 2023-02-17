@@ -12,7 +12,6 @@ namespace _NET_Test.DatabaseModels
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [Range(0, 10)]
         public int Rate { get; set; }
 
         public string? Text { get; set; }
