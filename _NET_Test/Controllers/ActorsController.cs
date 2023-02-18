@@ -8,6 +8,15 @@ namespace _NET_Test.Controllers
     public class ActorsController : ControllerBase
     {
 
+        record ActorResponse
+        {
+            public int Id { get; set; }
+            public string Name { get; set; }
+            public string Surname { get; set; }
+            public List<Rating> Ratings { get; set; }
+            public List<Movie> Movies { get; set; }
+        }
+
         private readonly IMemoryCache _memoryCache;
 
         public ActorsController(IMemoryCache memoryCache)
@@ -36,8 +45,15 @@ namespace _NET_Test.Controllers
                     {
                         List<Movie> movies = await actorsService.FetchMovies(id);
                         actor.Ratings = await actorsService.FetchRatings(id);
-                        var resolve = new { actor.Id, actor.Name, actor.Surname, actor.Ratings, movies };
-                        _memoryCache.Set(id, resolve, new MemoryCacheEntryOptions
+                        ActorResponse resolve = new ActorResponse() 
+                        {
+                            Id = actor.Id,
+                            Name = actor.Name,
+                            Surname = actor.Surname,
+                            Ratings = actor.Ratings,
+                            Movies = movies
+                        };
+                        _memoryCache.Set($"Actor.{id}", resolve, new MemoryCacheEntryOptions
                         {
                             AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(1)
                         });

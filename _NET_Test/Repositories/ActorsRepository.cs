@@ -20,7 +20,7 @@ namespace _NET_Test.Repositories
         {
             using (DatabaseContext db = new(Config.configuration))
             {
-                return await db.Ratings.FromSqlRaw($"SELECT * FROM Ratings WHERE ActorId = {ActorId};").ToListAsync();
+                return await db.Ratings.FromSqlRaw($"SELECT * FROM Ratings WHERE Ratings.ActorId = {ActorId};").ToListAsync();
             }
         }
 
@@ -84,16 +84,5 @@ namespace _NET_Test.Repositories
             }
         }
 
-        public async Task AssociateWithMovie(int ActorId, int MovieId)
-        {
-            using (DatabaseContext db = new(Config.configuration))
-            {
-                await db.AddAsync(new ActorMovie 
-                {
-                    ActorId = ActorId,
-                    MovieId = MovieId
-                });
-            }
-        }
     }
 }
