@@ -6,6 +6,24 @@ namespace _NET_Test.Services
     public class MoviesService
     {
 
+        public async Task<Movie?> Fetch(int id)
+        {
+            MoviesRepository repository = new();
+            return await repository.FindOneById(id);
+        }
+
+        public async Task<List<Actor>> FetchActors(int id)
+        {
+            MoviesRepository repository = new();
+            return await repository.FindActorsOfMovie(id);
+        }
+
+        public async Task<List<Rating>> FetchRatings(int id)
+        {
+            MoviesRepository repository = new();
+            return await repository.FindRatings(id);
+        }
+
         public async Task<List<Movie>> FetchAll()
         {
             MoviesRepository moviesRepo = new();

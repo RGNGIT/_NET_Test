@@ -18,6 +18,7 @@ namespace _NET_Test.DatabaseModels
         public User user { get; set; } = null!;
 
         [NotMapped]
+        [JsonIgnore]
         public int ProductId { get; set; }
     }
 }

@@ -16,6 +16,8 @@ namespace _NET_Test.DatabaseModels
         public string Surname { get; set; } = null!;
 
         public List<Rating> Ratings { get; set; } = new List<Rating>();
-        public List<Movie> Movies { get; set; } = new List<Movie>();
+
+        [JsonIgnore]
+        public List<ActorMovie> Movies { get; set; }
     }
 }

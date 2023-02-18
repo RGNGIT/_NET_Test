@@ -6,6 +6,24 @@ namespace _NET_Test.Repositories
     public class ActorsRepository
     {
 
+        public async Task<List<Movie>> FindMoviesOfActor(int ActorId)
+        {
+            using (DatabaseContext db = new(Config.configuration))
+            {
+                var ActorsIncludingMovies = await db.Actors.Include(actor => actor.Movies).ThenInclude(row => row.Movie).FirstAsync(actor => actor.Id == ActorId);
+                var Movies = ActorsIncludingMovies.Movies.Select(row => row.Movie);
+                return Movies.ToList();
+            }
+        }
+
+        public async Task<List<Rating>> FindRatings(int ActorId)
+        {
+            using (DatabaseContext db = new(Config.configuration))
+            {
+                return await db.Ratings.FromSqlRaw($"SELECT * FROM Ratings WHERE ActorId = {ActorId};").ToListAsync();
+            }
+        }
+
         public async Task<List<Actor>> FindAll()
         {
             using (DatabaseContext db = new(Config.configuration))
@@ -65,11 +83,16 @@ namespace _NET_Test.Repositories
                 return actor;
             }
         }
-        public async Task<List<Actor>> FindActorsOfMovie(Movie movie)
+
+        public async Task AssociateWithMovie(int ActorId, int MovieId)
         {
             using (DatabaseContext db = new(Config.configuration))
             {
-                return null;
+                await db.AddAsync(new ActorMovie 
+                {
+                    ActorId = ActorId,
+                    MovieId = MovieId
+                });
             }
         }
     }

@@ -5,6 +5,25 @@ namespace _NET_Test.Services
 {
     public class ActorsService
     {
+
+        public async Task<Actor?> Fetch(int id)
+        {
+            ActorsRepository repository = new();
+            return await repository.FindOneById(id);
+        }
+
+        public async Task<List<Movie>> FetchMovies(int id)
+        {
+            ActorsRepository repository = new();
+            return await repository.FindMoviesOfActor(id);
+        }
+
+        public async Task<List<Rating>> FetchRatings(int id)
+        {
+            ActorsRepository repository = new();
+            return await repository.FindRatings(id);
+        }
+
         public async Task<Actor> AddNew(string name, string surname)
         {
             Actor actor = new() 

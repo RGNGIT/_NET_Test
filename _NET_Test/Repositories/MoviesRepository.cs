@@ -6,6 +6,24 @@ namespace _NET_Test.Repositories
     public class MoviesRepository
     {
 
+        public async Task<List<Actor>> FindActorsOfMovie(int MovieId)
+        {
+            using (DatabaseContext db = new(Config.configuration))
+            {
+                var MovieIncludingActors = await db.Movies.Include(movie => movie.Actors).ThenInclude(row => row.Actor).FirstAsync(movie => movie.Id == MovieId);
+                var Actors = MovieIncludingActors.Actors.Select(row => row.Actor);
+                return Actors.ToList();
+            }
+        }
+
+        public async Task<List<Rating>> FindRatings(int MovieId)
+        {
+            using (DatabaseContext db = new(Config.configuration))
+            {
+                return await db.Ratings.FromSqlRaw($"SELECT * FROM Ratings WHERE MovieId = {MovieId};").ToListAsync();
+            }
+        }
+
         public async Task<List<Movie>> FindAll()
         {
             using(DatabaseContext db = new(Config.configuration))
