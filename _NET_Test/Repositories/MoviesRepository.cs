@@ -20,7 +20,7 @@ namespace _NET_Test.Repositories
         {
             using (DatabaseContext db = new(Config.configuration))
             {
-                return await db.Ratings.FromSqlRaw($"SELECT * FROM Ratings WHERE MovieId = {MovieId};").ToListAsync();
+                return await db.Ratings.Include(r => r.user).ToListAsync();
             }
         }
 

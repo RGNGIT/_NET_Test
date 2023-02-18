@@ -57,6 +57,7 @@ namespace _NET_Test.Services
 
         public async Task<Movie> AddActor(int MovieId, int ActorId)
         {
+            ActorsMoviesRepository actorsMoviesRepository = new();
             MoviesRepository moviesRepository = new();
             ActorsRepository actorsRepository = new();
             Movie? movie = await moviesRepository.FindOneById(MovieId);
@@ -65,6 +66,7 @@ namespace _NET_Test.Services
             {
                 throw new Exception("Some shit");
             }
+            await actorsMoviesRepository.Associate(actor.Id, movie.Id);
             return await moviesRepository.Refresh(movie!);
         }
     }

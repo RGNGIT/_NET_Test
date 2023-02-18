@@ -11,10 +11,10 @@ namespace _NET_Test.Controllers
         record ActorResponse
         {
             public int Id { get; set; }
-            public string Name { get; set; }
-            public string Surname { get; set; }
-            public List<Rating> Ratings { get; set; }
-            public List<Movie> Movies { get; set; }
+            public string? Name { get; set; }
+            public string? Surname { get; set; }
+            public List<Rating>? Ratings { get; set; }
+            public List<Movie>? Movies { get; set; }
         }
 
         private readonly IMemoryCache _memoryCache;
@@ -91,6 +91,20 @@ namespace _NET_Test.Controllers
                 return Results.Ok(await actorsService.AddNew(Name, Surname));
             }
             catch(Exception ex) 
+            {
+                return Results.Problem(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [Consumes("application/x-www-form-urlencoded")]
+        public async Task<IResult> AddMovie(ActorsService actorsService, Actor actor, Movie movie)
+        {
+            try
+            {
+                return Results.Ok(await actorsService.AddMovie(movie.Id, actor.Id));
+            }
+            catch (Exception ex)
             {
                 return Results.Problem(ex.Message);
             }

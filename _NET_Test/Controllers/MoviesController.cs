@@ -12,9 +12,9 @@ namespace _NET_Test.Controllers
         record MovieResponse
         {
             public int Id { get; set; }
-            public string Name { get; set; }
-            public List<Rating> Ratings { get; set; }
-            public List<Actor> Actors { get; set; }
+            public string? Name { get; set; }
+            public List<Rating>? Ratings { get; set; }
+            public List<Actor>? Actors { get; set; }
         }
 
         private readonly IMemoryCache _memoryCache;

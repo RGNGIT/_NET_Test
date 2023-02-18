@@ -50,6 +50,21 @@ namespace _NET_Test.Services
             return await actorsRepo.Refresh(actor!);
         }
 
+        public async Task<Actor> AddMovie(int ActorId, int MovieId)
+        {
+            ActorsMoviesRepository actorsMoviesRepository = new();
+            MoviesRepository moviesRepository = new();
+            ActorsRepository actorsRepository = new();
+            Movie? movie = await moviesRepository.FindOneById(MovieId);
+            Actor? actor = await actorsRepository.FindOneById(ActorId);
+            if (movie == null || actor == null)
+            {
+                throw new Exception("Some shit");
+            }
+            await actorsMoviesRepository.Associate(actor.Id, movie.Id);
+            return await actorsRepository.Refresh(actor!);
+        }
+
         public async Task<List<Actor>> FetchAll() 
         {
             ActorsRepository actorsRepo = new();
