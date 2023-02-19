@@ -8,7 +8,7 @@ namespace _NET_Test.DatabaseModels
     public class Actor: IComparable<Actor>
     {
 
-        public int CompareTo(Actor otherActor) => this.Ratings.Count > otherActor.Ratings.Count ? -1 : 1;
+        public int CompareTo(Actor? otherActor) => this.Ratings.Count > otherActor!.Ratings.Count ? -1 : 1;
 
         [Key, Column(Order = 0)]
         [JsonConverter(typeof(IntToStringConverter))]

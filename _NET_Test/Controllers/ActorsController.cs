@@ -40,7 +40,7 @@ namespace _NET_Test.Controllers
                     Actor? actor = await actorsService.Fetch(id);
                     if (actor == null)
                     {
-                        return Results.NotFound("Чет не нашел");
+                        return Results.NotFound("Could not resolve Actor");
                     }
                     else
                     {

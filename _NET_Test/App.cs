@@ -3,11 +3,14 @@
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.Configuration.AddJsonFile("env.json");
+builder.Services.AddHealthChecks();
 builder.Services.AddMemoryCache();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddMvc();
 builder.Services.AddControllers();
 builder.Services.AddServices();
+builder.Services.AddResponseCompression(options => options.EnableForHttps = true);
+builder.Services.AddCors();
 builder.Services.AddAuthentication("Bearer").AddJwtBearer(options =>
 {
     options.TokenValidationParameters = Config.JWT.validationParameters;
@@ -22,6 +25,9 @@ builder.Services.AddSession(options =>
 
 WebApplication app = builder.Build();
 
+app.MapHealthChecks("/hp");
+app.UseCors(b => b.AllowAnyOrigin());
+app.UseResponseCompression();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseSession();

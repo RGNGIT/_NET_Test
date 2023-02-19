@@ -43,7 +43,7 @@ namespace _NET_Test.Services
             User? user = await usersRepository.FindOneById(UserId);
             if (actor == null || user == null)
             {
-                throw new Exception("Some shit");
+                throw new Exception("Could not resolve Actor or User");
             }
             rating.user = user!;
             actor!.Ratings.Add(rating);
@@ -59,7 +59,7 @@ namespace _NET_Test.Services
             Actor? actor = await actorsRepository.FindOneById(ActorId);
             if (movie == null || actor == null)
             {
-                throw new Exception("Some shit");
+                throw new Exception("Could not resolve Movie or Actor");
             }
             await actorsMoviesRepository.Associate(actor.Id, movie.Id);
             return await actorsRepository.Refresh(actor!);

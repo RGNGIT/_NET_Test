@@ -40,7 +40,7 @@ namespace _NET_Test.Controllers
                     Movie? movie = await moviesService.Fetch(id);
                     if (movie == null)
                     {
-                        return Results.NotFound("Чет не нашел");
+                        return Results.NotFound("Could not resolve Movie");
                     } 
                     else
                     {

@@ -11,11 +11,17 @@ namespace _NET_Test.Repositories
             using (DatabaseContext db = new(Config.configuration))
             {
                 List<Movie> movieList = new List<Movie>();
-                var ActorsIncludingMovies = await db.Actors.Include(actor => actor.Movies).ThenInclude(row => row.Movie).FirstAsync(actor => actor.Id == ActorId);
+                var ActorsIncludingMovies = await db.Actors
+                    .Include(actor => actor.Movies)
+                    .ThenInclude(row => row.Movie)
+                    .FirstAsync(actor => actor.Id == ActorId);
                 var Movies = ActorsIncludingMovies.Movies.Select(row => row.Movie);
                 foreach(var movie in Movies) 
                 {
-                    movieList.Add(await db.Movies.Include(r => r.Ratings).ThenInclude(r => r.user).Where(r => r.Id == movie.Id).FirstAsync());
+                    movieList.Add(await db.Movies
+                        .Include(r => r.Ratings)
+                        .ThenInclude(r => r.user)
+                        .Where(r => r.Id == movie.Id).FirstAsync());
                 }
                 return movieList;
             }
@@ -25,7 +31,10 @@ namespace _NET_Test.Repositories
         {
             using (DatabaseContext db = new(Config.configuration))
             {
-                var actor = await db.Actors.Include(r => r.Ratings).ThenInclude(r => r.user).Where(r => r.Id == ActorId).FirstAsync();
+                var actor = await db.Actors
+                    .Include(r => r.Ratings)
+                    .ThenInclude(r => r.user)
+                    .Where(r => r.Id == ActorId).FirstAsync();
                 return actor.Ratings;
             }
         }
@@ -34,7 +43,9 @@ namespace _NET_Test.Repositories
         {
             using (DatabaseContext db = new(Config.configuration))
             {
-                return await db.Actors.Include(r => r.Ratings).ThenInclude(r => r.user).ToListAsync();
+                return await db.Actors
+                    .Include(r => r.Ratings)
+                    .ThenInclude(r => r.user).ToListAsync();
             }
         }
 
