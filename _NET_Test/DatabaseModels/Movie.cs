@@ -5,8 +5,11 @@ using _NET_Test.Misc;
 
 namespace _NET_Test.DatabaseModels
 {
-    public class Movie
+    public class Movie: IComparable<Movie>
     {
+
+        public int CompareTo(Movie otherMovie) => this.Ratings.Count > otherMovie.Ratings.Count ? -1 : 1;
+
         [Key, Column(Order = 0)]
         [JsonConverter(typeof(IntToStringConverter))]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

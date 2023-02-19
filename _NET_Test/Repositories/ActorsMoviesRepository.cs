@@ -8,11 +8,12 @@ namespace _NET_Test.Repositories
         {
             using (DatabaseContext db = new(Config.configuration))
             {
-                await db.AddAsync(new ActorMovie
+                await db.ActorsMovie.AddAsync(new ActorMovie
                 {
                     ActorId = ActorId,
                     MovieId = MovieId
                 });
+                await db.SaveChangesAsync();
             }
         }
     }

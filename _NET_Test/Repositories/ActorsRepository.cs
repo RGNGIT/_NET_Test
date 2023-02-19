@@ -10,9 +10,14 @@ namespace _NET_Test.Repositories
         {
             using (DatabaseContext db = new(Config.configuration))
             {
+                List<Movie> movieList = new List<Movie>();
                 var ActorsIncludingMovies = await db.Actors.Include(actor => actor.Movies).ThenInclude(row => row.Movie).FirstAsync(actor => actor.Id == ActorId);
                 var Movies = ActorsIncludingMovies.Movies.Select(row => row.Movie);
-                return Movies.ToList();
+                foreach(var movie in Movies) 
+                {
+                    movieList.Add(await db.Movies.Include(r => r.Ratings).ThenInclude(r => r.user).Where(r => r.Id == movie.Id).FirstAsync());
+                }
+                return movieList;
             }
         }
 
@@ -20,7 +25,8 @@ namespace _NET_Test.Repositories
         {
             using (DatabaseContext db = new(Config.configuration))
             {
-                return await db.Ratings.Include(r => r.user).ToListAsync();
+                var actor = await db.Actors.Include(r => r.Ratings).ThenInclude(r => r.user).Where(r => r.Id == ActorId).FirstAsync();
+                return actor.Ratings;
             }
         }
 
@@ -28,7 +34,7 @@ namespace _NET_Test.Repositories
         {
             using (DatabaseContext db = new(Config.configuration))
             {
-                return await db.Actors.ToListAsync();
+                return await db.Actors.Include(r => r.Ratings).ThenInclude(r => r.user).ToListAsync();
             }
         }
 

@@ -16,7 +16,10 @@ namespace _NET_Test.DatabaseModels
         public int Id { get; set; }
 		
 		public string? Username { get; set; }
-		public string? Password { get; set; }
+
+        [JsonIgnore]
+        public string? Password { get; set; }
+		[JsonIgnore]
 		public DateTime DateOfReg { get; set; } = DateTime.Now;
 	}
 

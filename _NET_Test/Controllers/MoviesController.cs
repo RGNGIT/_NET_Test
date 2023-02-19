@@ -2,6 +2,7 @@
 using _NET_Test.Services;
 using _NET_Test.DatabaseModels;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.AspNetCore.Authorization;
 
 namespace _NET_Test.Controllers
 {
@@ -71,7 +72,19 @@ namespace _NET_Test.Controllers
         {
             try
             {
-                return Results.Ok(await moviesService.FetchAll());
+                if (_memoryCache.TryGetValue("CachedMoviesList", out var result))
+                {
+                    return Results.Ok(result);
+                }
+                else
+                {
+                    List<Movie> movies = await moviesService.FetchAll();
+                    _memoryCache.Set("CachedMoviesList", movies, new MemoryCacheEntryOptions
+                    {
+                        AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(1)
+                    });
+                    return Results.Ok(movies);
+                }
             }
             catch (Exception ex)
             {
@@ -100,6 +113,22 @@ namespace _NET_Test.Controllers
             try
             {
                 return Results.Ok(await movieService.AddActor(movie.Id, actor.Id));
+            }
+            catch (Exception ex)
+            {
+                return Results.Problem(ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IResult> Popular(MoviesService moviesService)
+        {
+            try
+            {
+                List<Movie> movies = await moviesService.FetchAll();
+                movies.Sort();
+                return Results.Ok(movies);
             }
             catch (Exception ex)
             {
