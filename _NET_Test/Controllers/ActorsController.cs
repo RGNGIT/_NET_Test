@@ -1,4 +1,5 @@
 ﻿using _NET_Test.DatabaseModels;
+using _NET_Test.Repositories;
 using _NET_Test.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -27,7 +28,7 @@ namespace _NET_Test.Controllers
 
         [HttpGet]
         [Route("/api/v2/[controller]/[action]/{id}")]
-        public async Task<IResult> Find(ActorsService actorsService, int id)
+        public async Task<IResult> Find(ActorsService actorsService, ActorsRepository repository, int id)
         {
             try
             {
@@ -37,15 +38,15 @@ namespace _NET_Test.Controllers
                 }
                 else
                 {
-                    Actor? actor = await actorsService.Fetch(id);
+                    Actor? actor = await actorsService.Fetch(repository, id);
                     if (actor == null)
                     {
                         return Results.NotFound("Could not resolve Actor");
                     }
                     else
                     {
-                        List<Movie> movies = await actorsService.FetchMovies(id);
-                        actor.Ratings = await actorsService.FetchRatings(id);
+                        List<Movie> movies = await actorsService.FetchMovies(repository, id);
+                        actor.Ratings = await actorsService.FetchRatings(repository, id);
                         ActorResponse resolve = new ActorResponse() 
                         {
                             Id = actor.Id,
@@ -69,7 +70,7 @@ namespace _NET_Test.Controllers
         }
 
         [HttpGet]
-        public async Task<IResult> ShowAll(ActorsService actorsService)
+        public async Task<IResult> ShowAll(ActorsService actorsService, ActorsRepository repository)
         {
             try
             {
@@ -79,7 +80,7 @@ namespace _NET_Test.Controllers
                 }
                 else
                 {
-                    List<Actor> actors = await actorsService.FetchAll();
+                    List<Actor> actors = await actorsService.FetchAll(repository);
                     _memoryCache.Set("CachedActorsList", actors, new MemoryCacheEntryOptions
                     {
                         AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(1)
@@ -95,13 +96,13 @@ namespace _NET_Test.Controllers
 
         [HttpPost]
         [Consumes("application/x-www-form-urlencoded")]
-        public async Task<IResult> AddActor(ActorsService actorsService, Actor actor)
+        public async Task<IResult> AddActor(ActorsService actorsService, ActorsRepository repository, Actor actor)
         {
             try
             {
                 string Name = actor.Name;
                 string Surname = actor.Surname;
-                return Results.Ok(await actorsService.AddNew(Name, Surname));
+                return Results.Ok(await actorsService.AddNew(repository, Name, Surname));
             }
             catch(Exception ex) 
             {
@@ -111,11 +112,11 @@ namespace _NET_Test.Controllers
 
         [HttpPost]
         [Consumes("application/x-www-form-urlencoded")]
-        public async Task<IResult> AddMovie(ActorsService actorsService, Actor actor, Movie movie)
+        public async Task<IResult> AddMovie(ActorsService actorsService, Actor actor, ActorsRepository actorsRepository, MoviesRepository moviesRepository, ActorsMoviesRepository actorsMoviesRepository, Movie movie)
         {
             try
             {
-                return Results.Ok(await actorsService.AddMovie(movie.Id, actor.Id));
+                return Results.Ok(await actorsService.AddMovie(actorsRepository, moviesRepository, actorsMoviesRepository, movie.Id, actor.Id));
             }
             catch (Exception ex)
             {
@@ -125,11 +126,11 @@ namespace _NET_Test.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<IResult> Popular(ActorsService actorsService)
+        public async Task<IResult> Popular(ActorsService actorsService, ActorsRepository repository)
         {
             try
             {
-                List<Actor> actors = await actorsService.FetchAll();
+                List<Actor> actors = await actorsService.FetchAll(repository);
                 actors.Sort();
                 return Results.Ok(actors);
             }

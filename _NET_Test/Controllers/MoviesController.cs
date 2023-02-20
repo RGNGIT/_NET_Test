@@ -3,6 +3,7 @@ using _NET_Test.Services;
 using _NET_Test.DatabaseModels;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.AspNetCore.Authorization;
+using _NET_Test.Repositories;
 
 namespace _NET_Test.Controllers
 {
@@ -27,7 +28,7 @@ namespace _NET_Test.Controllers
 
         [HttpGet]
         [Route("/api/v2/[controller]/[action]/{id}")]
-        public async Task<IResult> Find(MoviesService moviesService, int id)
+        public async Task<IResult> Find(MoviesService moviesService, MoviesRepository moviesRepository, int id)
         {
             try
             {
@@ -37,15 +38,15 @@ namespace _NET_Test.Controllers
                 }
                 else
                 {
-                    Movie? movie = await moviesService.Fetch(id);
+                    Movie? movie = await moviesService.Fetch(moviesRepository, id);
                     if (movie == null)
                     {
                         return Results.NotFound("Could not resolve Movie");
                     } 
                     else
                     {
-                        movie.Ratings = await moviesService.FetchRatings(id);
-                        List<Actor> actors = await moviesService.FetchActors(id);
+                        movie.Ratings = await moviesService.FetchRatings(moviesRepository, id);
+                        List<Actor> actors = await moviesService.FetchActors(moviesRepository, id);
                         MovieResponse resolve = new MovieResponse()
                         {
                             Id = movie.Id,
@@ -68,7 +69,7 @@ namespace _NET_Test.Controllers
         }
 
         [HttpGet]
-        public async Task<IResult> ShowAll(MoviesService moviesService)
+        public async Task<IResult> ShowAll(MoviesService moviesService, MoviesRepository moviesRepository)
         {
             try
             {
@@ -78,7 +79,7 @@ namespace _NET_Test.Controllers
                 }
                 else
                 {
-                    List<Movie> movies = await moviesService.FetchAll();
+                    List<Movie> movies = await moviesService.FetchAll(moviesRepository);
                     _memoryCache.Set("CachedMoviesList", movies, new MemoryCacheEntryOptions
                     {
                         AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(1)
@@ -94,11 +95,11 @@ namespace _NET_Test.Controllers
 
         [HttpPost]
         [Consumes("application/x-www-form-urlencoded")]
-        public async Task<IResult> AddMovie(MoviesService movieService, Movie movie)
+        public async Task<IResult> AddMovie(MoviesService movieService, MoviesRepository moviesRepository, Movie movie)
         {
             try
             {
-                return Results.Ok(await movieService.AddNew(movie.Name));
+                return Results.Ok(await movieService.AddNew(moviesRepository, movie.Name));
             } 
             catch (Exception ex) 
             {
@@ -108,11 +109,11 @@ namespace _NET_Test.Controllers
 
         [HttpPost]
         [Consumes("application/x-www-form-urlencoded")]
-        public async Task<IResult> AddCastActor(MoviesService movieService, Actor actor, Movie movie)
+        public async Task<IResult> AddCastActor(MoviesService movieService, MoviesRepository moviesRepository, ActorsRepository actorsRepository, ActorsMoviesRepository actorsMoviesRepository, Actor actor, Movie movie)
         {
             try
             {
-                return Results.Ok(await movieService.AddActor(movie.Id, actor.Id));
+                return Results.Ok(await movieService.AddActor(actorsRepository, moviesRepository, actorsMoviesRepository, movie.Id, actor.Id));
             }
             catch (Exception ex)
             {
@@ -122,11 +123,11 @@ namespace _NET_Test.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<IResult> Popular(MoviesService moviesService)
+        public async Task<IResult> Popular(MoviesService moviesService, MoviesRepository moviesRepository)
         {
             try
             {
-                List<Movie> movies = await moviesService.FetchAll();
+                List<Movie> movies = await moviesService.FetchAll(moviesRepository);
                 movies.Sort();
                 return Results.Ok(movies);
             }

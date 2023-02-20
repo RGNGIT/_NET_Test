@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using _NET_Test.Repositories;
 
 namespace _NET_Test.Controllers
 {
@@ -12,13 +13,13 @@ namespace _NET_Test.Controllers
 	{
 		[HttpPost]
         [Consumes("application/x-www-form-urlencoded")]
-        public async Task<IResult> Register(UsersService userService, HashService hashService, User user)
+        public async Task<IResult> Register(UsersService userService, HashService hashService, UsersRepository usersRepository, User user)
 		{
 			try
 			{
 				string Username = user.Username!;
 				string Password = hashService.CreateHash(user.Password!);
-                return Results.Ok(await userService.AddNew(Username, Password));
+                return Results.Ok(await userService.AddNew(usersRepository, Username, Password));
             }
 			catch (Exception ex) 
 			{
@@ -28,11 +29,11 @@ namespace _NET_Test.Controllers
 
 		[HttpPost]
         [Consumes("application/x-www-form-urlencoded")]
-        public async Task<IResult> Login(UsersService userService, HashService hashService, User user)
+        public async Task<IResult> Login(UsersService userService, HashService hashService, UsersRepository usersRepository, User user)
 		{
 			try
 			{
-				User? userFound = await userService.FetchByUsername(user.Username!);
+				User? userFound = await userService.FetchByUsername(usersRepository, user.Username!);
 				if(userFound != null && userFound.Password == hashService.CreateHash(user.Password!)) 
 				{
                     List<Claim> claims = new List<Claim> 

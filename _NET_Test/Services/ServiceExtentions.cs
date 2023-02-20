@@ -1,4 +1,6 @@
-﻿namespace _NET_Test.Services
+﻿using _NET_Test.Repositories;
+
+namespace _NET_Test.Services
 {
 	public static class ServiceExtentions
 	{
@@ -6,8 +8,12 @@
 		{
             collection.AddTransient<UsersService>();
 			collection.AddTransient<ActorsService>();
-			collection.AddSingleton<HashService>();
-			collection.AddSingleton<MoviesService>();
+			collection.AddTransient<MoviesService>();
+            collection.AddSingleton<HashService>();
+            collection.AddScoped<ActorsMoviesRepository>();
+			collection.AddScoped<ActorsRepository>();
+			collection.AddScoped<MoviesRepository>();
+			collection.AddScoped<UsersRepository>();
 		}
     }
 }

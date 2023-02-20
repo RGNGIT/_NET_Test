@@ -9,14 +9,13 @@ namespace _NET_Test.Services
     public class UsersService
 	{
 
-		public async Task<User> AddNew(string username, string password)
+		public async Task<User> AddNew(UsersRepository repo, string username, string password)
 		{
 			User user = new() 
 			{ 
 				Username = username, 
 				Password = password 
 			};
-			UsersRepository repo = new();
 			User? check = await repo.FindOneByUsername(username);
 			if(check == null) 
 			{
@@ -28,9 +27,8 @@ namespace _NET_Test.Services
 			}
 		}
 
-		public async Task<User?> FetchByUsername(string username)
+		public async Task<User?> FetchByUsername(UsersRepository repo, string username)
 		{
-            UsersRepository repo = new();
 			return await repo.FindOneByUsername(username);
 		}
 

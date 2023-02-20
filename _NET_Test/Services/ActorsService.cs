@@ -6,40 +6,34 @@ namespace _NET_Test.Services
     public class ActorsService
     {
 
-        public async Task<Actor?> Fetch(int id)
+        public async Task<Actor?> Fetch(ActorsRepository repository, int id)
         {
-            ActorsRepository repository = new();
             return await repository.FindOneById(id);
         }
 
-        public async Task<List<Movie>> FetchMovies(int id)
+        public async Task<List<Movie>> FetchMovies(ActorsRepository repository, int id)
         {
-            ActorsRepository repository = new();
             return await repository.FindMoviesOfActor(id);
         }
 
-        public async Task<List<Rating>> FetchRatings(int id)
+        public async Task<List<Rating>> FetchRatings(ActorsRepository repository, int id)
         {
-            ActorsRepository repository = new();
             return await repository.FindRatings(id);
         }
 
-        public async Task<Actor> AddNew(string name, string surname)
+        public async Task<Actor> AddNew(ActorsRepository repository, string name, string surname)
         {
             Actor actor = new() 
             {
                 Name = name,
                 Surname = surname
             };
-            ActorsRepository repo = new();
-            return await repo.AddOne(actor);
+            return await repository.AddOne(actor);
         }
 
-        public async Task<Actor> AddRating(Rating rating, int UserId)
+        public async Task<Actor> AddRating(ActorsRepository actorsRepository, UsersRepository usersRepository, Rating rating, int UserId)
         {
-            ActorsRepository actorsRepo = new();
-            UsersRepository usersRepository = new();
-            Actor? actor = await actorsRepo.FindOneById(rating.ProductId);
+            Actor? actor = await actorsRepository.FindOneById(rating.ProductId);
             User? user = await usersRepository.FindOneById(UserId);
             if (actor == null || user == null)
             {
@@ -47,14 +41,11 @@ namespace _NET_Test.Services
             }
             rating.user = user!;
             actor!.Ratings.Add(rating);
-            return await actorsRepo.Refresh(actor!);
+            return await actorsRepository.Refresh(actor!);
         }
 
-        public async Task<Actor> AddMovie(int ActorId, int MovieId)
+        public async Task<Actor> AddMovie(ActorsRepository actorsRepository, MoviesRepository moviesRepository, ActorsMoviesRepository actorsMoviesRepository, int ActorId, int MovieId)
         {
-            ActorsMoviesRepository actorsMoviesRepository = new();
-            MoviesRepository moviesRepository = new();
-            ActorsRepository actorsRepository = new();
             Movie? movie = await moviesRepository.FindOneById(MovieId);
             Actor? actor = await actorsRepository.FindOneById(ActorId);
             if (movie == null || actor == null)
@@ -65,9 +56,8 @@ namespace _NET_Test.Services
             return await actorsRepository.Refresh(actor!);
         }
 
-        public async Task<List<Actor>> FetchAll() 
+        public async Task<List<Actor>> FetchAll(ActorsRepository actorsRepo) 
         {
-            ActorsRepository actorsRepo = new();
             return await actorsRepo.FindAll();
         }
     }
