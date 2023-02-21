@@ -28,7 +28,7 @@ namespace _NET_Test.Controllers
 
         [HttpGet]
         [Route("/api/v2/[controller]/[action]/{id}")]
-        public async Task<IResult> Find(MoviesService moviesService, MoviesRepository moviesRepository, int id)
+        public async Task<IResult> Find(IMoviesService moviesService, MoviesRepository moviesRepository, int id)
         {
             try
             {
@@ -69,7 +69,7 @@ namespace _NET_Test.Controllers
         }
 
         [HttpGet]
-        public async Task<IResult> ShowAll(MoviesService moviesService, MoviesRepository moviesRepository)
+        public async Task<IResult> ShowAll(IMoviesService moviesService, MoviesRepository moviesRepository)
         {
             try
             {
@@ -95,7 +95,7 @@ namespace _NET_Test.Controllers
 
         [HttpPost]
         [Consumes("application/x-www-form-urlencoded")]
-        public async Task<IResult> AddMovie(MoviesService movieService, MoviesRepository moviesRepository, Movie movie)
+        public async Task<IResult> AddMovie(IMoviesService movieService, MoviesRepository moviesRepository, Movie movie)
         {
             try
             {
@@ -109,7 +109,7 @@ namespace _NET_Test.Controllers
 
         [HttpPost]
         [Consumes("application/x-www-form-urlencoded")]
-        public async Task<IResult> AddCastActor(MoviesService movieService, MoviesRepository moviesRepository, ActorsRepository actorsRepository, ActorsMoviesRepository actorsMoviesRepository, Actor actor, Movie movie)
+        public async Task<IResult> AddCastActor(IMoviesService movieService, MoviesRepository moviesRepository, ActorsRepository actorsRepository, ActorsMoviesRepository actorsMoviesRepository, Actor actor, Movie movie)
         {
             try
             {
@@ -123,7 +123,7 @@ namespace _NET_Test.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<IResult> Popular(MoviesService moviesService, MoviesRepository moviesRepository)
+        public async Task<IResult> Popular(IMoviesService moviesService, MoviesRepository moviesRepository)
         {
             try
             {

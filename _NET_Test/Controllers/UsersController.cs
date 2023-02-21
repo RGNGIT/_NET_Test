@@ -13,7 +13,7 @@ namespace _NET_Test.Controllers
 	{
 		[HttpPost]
         [Consumes("application/x-www-form-urlencoded")]
-        public async Task<IResult> Register(UsersService userService, HashService hashService, UsersRepository usersRepository, User user)
+        public async Task<IResult> Register(IUsersService userService, IHashService hashService, UsersRepository usersRepository, User user)
 		{
 			try
 			{
@@ -29,7 +29,7 @@ namespace _NET_Test.Controllers
 
 		[HttpPost]
         [Consumes("application/x-www-form-urlencoded")]
-        public async Task<IResult> Login(UsersService userService, HashService hashService, UsersRepository usersRepository, User user)
+        public async Task<IResult> Login(IUsersService userService, IHashService hashService, UsersRepository usersRepository, User user)
 		{
 			try
 			{

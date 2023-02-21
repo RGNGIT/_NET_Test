@@ -28,7 +28,7 @@ namespace _NET_Test.Controllers
 
         [HttpGet]
         [Route("/api/v2/[controller]/[action]/{id}")]
-        public async Task<IResult> Find(ActorsService actorsService, ActorsRepository repository, int id)
+        public async Task<IResult> Find(IActorsService actorsService, ActorsRepository repository, int id)
         {
             try
             {
@@ -70,7 +70,7 @@ namespace _NET_Test.Controllers
         }
 
         [HttpGet]
-        public async Task<IResult> ShowAll(ActorsService actorsService, ActorsRepository repository)
+        public async Task<IResult> ShowAll(IActorsService actorsService, ActorsRepository repository)
         {
             try
             {
@@ -96,7 +96,7 @@ namespace _NET_Test.Controllers
 
         [HttpPost]
         [Consumes("application/x-www-form-urlencoded")]
-        public async Task<IResult> AddActor(ActorsService actorsService, ActorsRepository repository, Actor actor)
+        public async Task<IResult> AddActor(IActorsService actorsService, ActorsRepository repository, Actor actor)
         {
             try
             {
@@ -112,7 +112,7 @@ namespace _NET_Test.Controllers
 
         [HttpPost]
         [Consumes("application/x-www-form-urlencoded")]
-        public async Task<IResult> AddMovie(ActorsService actorsService, Actor actor, ActorsRepository actorsRepository, MoviesRepository moviesRepository, ActorsMoviesRepository actorsMoviesRepository, Movie movie)
+        public async Task<IResult> AddMovie(IActorsService actorsService, Actor actor, ActorsRepository actorsRepository, MoviesRepository moviesRepository, ActorsMoviesRepository actorsMoviesRepository, Movie movie)
         {
             try
             {
@@ -126,7 +126,7 @@ namespace _NET_Test.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<IResult> Popular(ActorsService actorsService, ActorsRepository repository)
+        public async Task<IResult> Popular(IActorsService actorsService, ActorsRepository repository)
         {
             try
             {

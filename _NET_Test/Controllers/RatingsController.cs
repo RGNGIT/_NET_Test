@@ -11,7 +11,7 @@ namespace _NET_Test.Controllers
         [HttpPost]
         [Authorize]
         [Consumes("application/x-www-form-urlencoded")]
-        public async Task<IResult> AddRatingToMovie(UsersService userService, MoviesService moviesService, MoviesRepository moviesRepository, UsersRepository usersRepository, Rating rating)
+        public async Task<IResult> AddRatingToMovie(IUsersService userService, IMoviesService moviesService, MoviesRepository moviesRepository, UsersRepository usersRepository, Rating rating)
         {
             try
             {
@@ -27,7 +27,7 @@ namespace _NET_Test.Controllers
         [HttpPost]
         [Authorize]
         [Consumes("application/x-www-form-urlencoded")]
-        public async Task<IResult> AddRatingToActor(UsersService userService, ActorsService actorsService, ActorsRepository actorsRepository, UsersRepository usersRepository, Rating rating)
+        public async Task<IResult> AddRatingToActor(IUsersService userService, IActorsService actorsService, ActorsRepository actorsRepository, UsersRepository usersRepository, Rating rating)
         {
             try
             {
