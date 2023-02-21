@@ -6,7 +6,7 @@ using System.Reflection;
 namespace _NET_Test.Services
 {
 
-    public class UsersService
+    public class UsersService: IUsersService
 	{
 
 		public async Task<User> AddNew(UsersRepository repo, string username, string password)

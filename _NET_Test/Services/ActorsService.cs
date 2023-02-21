@@ -3,7 +3,7 @@ using _NET_Test.DatabaseModels;
 
 namespace _NET_Test.Services
 {
-    public class ActorsService
+    public class ActorsService: IActorsService
     {
 
         public async Task<Actor?> Fetch(ActorsRepository repository, int id)

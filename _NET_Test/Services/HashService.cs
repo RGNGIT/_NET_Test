@@ -3,7 +3,7 @@ using System.Security.Cryptography;
 
 namespace _NET_Test.Services
 {
-    public class HashService
+    public class HashService: IHashService
     {
         public string CreateHash(string value)
         {

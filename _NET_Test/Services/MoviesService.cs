@@ -3,7 +3,7 @@ using _NET_Test.Repositories;
 
 namespace _NET_Test.Services
 {
-    public class MoviesService
+    public class MoviesService: IMoviesService
     {
 
         public async Task<Movie?> Fetch(MoviesRepository repository, int id)
